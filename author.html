@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Webapps_Assingment-06</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<head>Author entry Tarun Yada
+<title>Author</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -19,52 +20,32 @@
         height: auto;
     }
 </style>
-    
-</head>
- 
 <body>
+    <p id="result"></p>
+    <script>
+        function resolveForm() {
+            console.log("Getting form values")
+            age = document.getElementById("form1_age").value
+            nick = document.getElementById("form1_nick").value
+            confirmed = confirm("Are these the values? " + age + " and " + nick)
 
-    <h2>Author entry Tarun Yada</h2>
-
-    <form>
-        <label for="form1_age">What is your age </label>
-        <input type ="number" id="form1_age" name="form1_age" min=10 max=50 step=2 value=30> <br>
-    
-        <label for="form1_nick">What is your nickname </label>
-        <input type ="text" id="form1_nick" name="form1_nick" autofocus> <br>
-    
-        <input type="button" onclick="resolveForm()" value="Get values from form">
-    </form>
-    
-    
-    <p id="result">This text will be replaced </p>
-    
-    <script> 
-    
-    function resolveForm (){
-        console.log("Getting form values")
-        age = document.getElementById("form1_age").value
-        nick = document.getElementById("form1_nick").value
-        confirmed = confirm("Are these the values? "+age+" and "+nick)
-        
-        out = document.getElementById("result")
-        if(confirmed){
-            out.innerHTML = "Values were confirmed"
-        } else {
-            out.innerHTML = "Values were not confirmed"
+            out = document.getElementById("result")
+            if (confirmed) {
+                out.innerHTML = "Values were confirmed"
+            } else {
+                out.innerHTML = "Values were not confirmed"
+            }
         }
-    }
     </script>
-    <form id="authorForm">
+    <form id="authorForm" class="mt-4">
         <label for="secretAuthor">The hidden author name:</label>
-        <input type="password" id="secretAuthor" value="Dickens">
-        
+        <input type="password" class="form-control" id="secretAuthor" value="Dickens">
         <label for="guessAuthor">Guess the author:</label>
-        <input type="text" id="guessAuthor">
-        
-        <button type="button" onclick="checkAuthor()">Check the guess</button>
-        
+        <input type="text" class="form-control" id="guessAuthor"><br>
+        <button type="button" class="btn btn-primary" onclick="checkAuthor()">Check the guess</button>
         <p id="result"></p>
+    </form>
+    <div class="alert alert-danger mt-3 d-none" id="incorrectGuesses"></div>
     
     </form>
     <script>
@@ -74,47 +55,55 @@
         function checkAuthor() {
             const secretAuthor = document.getElementById('secretAuthor').value;
             const guessAuthor = document.getElementById('guessAuthor').value;
-    
-            if (secretAuthor === guessAuthor)
-             {
+            if (secretAuthor === guessAuthor) {
                 good++;
-                alert('You got it right!');
-            } else
-             {
+                alert('You got it right');
+            } else {
                 oops++;
                 alert('Sorry');
+                document.getElementById('incorrectGuesses').textContent = `Incorrect Guesses: ${oops}`;
+                document.getElementById('incorrectGuesses').classList.remove('d-none');
+                if (oops >= 7) {
+                    document.getElementById('result').innerHTML = '';
+                    document.getElementById('authorForm').innerHTML = `<button type="button" class="btn btn-danger" onclick="outOfGuesses()">Sorry, ran out of Guesses</button>`;
+                }
             }
-            document.getElementById('result').innerHTML = `right: ${good}, wrong: ${oops}`;
+            document.getElementById('result').innerHTML = `Right: ${good}, Wrong: ${oops}`;
+        }
+    
+        function outOfGuesses() {
+            alert('Sorry, ran out of guesses.');
         }
     </script>
-    <div id="imageContainer">
-        <img id="displayedImage" src="newyork.jpg" alt="city pictures" width="100" height="100" onclick="selectImage()">
-      </div>
-      <script>
-        var userImage= 1;
-        function selectImage(){
-          var imageElement=document.getElementById("displayedImage");
-          switch(userImage){
-            case 1:
-              imageElement.src="newyork.jpg";
-              userImage=2;
-              break;
-              case 2:
-              imageElement.src="dallas.jpg";
-              userImage=3;
-              break;
-              case 3:
-              imageElement.src="atlanta.jpg";
-              userImage=1;
-              break;
-              default:
-              imageElement.src="newyork.jpg";
-              userImage=1;
-              break;
-          }
-        }
-        </script>
     
+    <div class="image-container border mt-4">
+        <img id="cityImage" src="newyork.jpg" alt="City 1" class="img-fluid">
+    </div>
+    
+    <script>
+        let useImage = 1;
+    
+        function selectImage() {
+            switch (useImage) {
+                case 1:
+                    document.getElementById('cityImage').src = 'atlanta.jpg';
+                    useImage = 2;
+                    break;
+                case 2:
+                    document.getElementById('cityImage').src = 'dallas.jpg';
+                    useImage = 3;
+                    break;
+                case 3:
+                    document.getElementById('cityImage').src = 'newyork.jpg';
+                    useImage = 1;
+                    break;
+                default:
+                    break;
+            }
+        }
+    
+        document.getElementById('cityImage').onclick = selectImage;
+    </script>
     
 </body>
-</html> 
+</html>
